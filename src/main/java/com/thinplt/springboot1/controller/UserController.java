@@ -5,6 +5,7 @@ import com.thinplt.springboot1.entity.User;
 import com.thinplt.springboot1.exception.ErrorDetail;
 import com.thinplt.springboot1.exception.ResourceNotFoundException;
 import com.thinplt.springboot1.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,14 +26,14 @@ public class UserController {
 
     // build create User REST API
     @PostMapping("create")
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO user) {
+    public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserDTO user) {
         UserDTO savedUser = userService.createUser(user);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
 
     // build get by Id User REST API
     @GetMapping("get/{id}")
-    public ResponseEntity<UserDTO> createUser(@PathVariable("id") Long userId) {
+    public ResponseEntity<UserDTO> getUserById(@PathVariable("id") Long userId) {
         UserDTO user = userService.getUserById(userId);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
@@ -45,7 +46,7 @@ public class UserController {
     }
 
     @PutMapping("update/{id}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable("id") Long userId, @RequestBody UserDTO userDTO) {
+    public ResponseEntity<UserDTO> updateUser(@PathVariable("id") Long userId, @RequestBody @Valid UserDTO userDTO) {
         userDTO.setId(userId);
         UserDTO updatedUser = userService.updateUser(userDTO);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
